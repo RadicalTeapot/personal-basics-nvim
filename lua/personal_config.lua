@@ -1,12 +1,13 @@
 local M = {}
+local H = {}
 
-local keymaps = {
+H.keymaps = {
     {
         "n",
         "<Leader>x",
         function()
+            vim.cmd([[w]])
             vim.cmd([[source %]])
-            vim.notify("Sourced current file")
         end,
         desc = "Source current file",
     },
@@ -62,9 +63,34 @@ local keymaps = {
     { "n", "<Leader>wh", "<cmd>wincmd h<cr>", desc = "Move to [w]indow right" },
 }
 
-local apply_keymap = function()
-    for _, t in ipairs(keymaps) do
-        vim.keymap.set(t[1], t[2], t[3], { desc = t.desc })
+-- Keymaps --------------------------------------------------------------------
+
+---Sensible keymap default opts
+H.default_map_opts = { silent = true, noremap = true }
+
+--- Wrap vim.keymap.set with H.default_map_opts as default opts
+--- NOP if lhs is empty string
+H.map = function(modes, lhs, rhs, opts)
+    if lhs == "" then
+        return
+    end
+    opts = vim.tbl_deep_extend("force", H.default_map_opts, opts or {})
+    vim.keymap.set(modes, lhs, rhs, opts)
+end
+
+H.keymap_set = function(modes, lhs, rhs, opts)
+    -- TODO Check if key mapping already exists and skip if it does (see mini.basics plugin implementation for how to do
+    -- it)
+
+    modes = type(modes) == "string" and { modes } or modes
+    H.map(modes, lhs, rhs, opts)
+end
+
+H.apply_keymap = function(keymaps)
+    assert(type(keymaps) == "table", "Keymaps must be a table")
+
+    for _, t in pairs(keymaps) do
+        H.keymap_set(t[1], t[2], t[3], { desc = t.desc })
     end
 end
 
@@ -111,28 +137,22 @@ local get_status_line = function()
 end
 
 local default_opts = {
-    keymap = true,
+    keymaps = H.keymaps,
     scrolloff = 5,
+    statusline = true,
+    colorscheme = "habamax",
 }
 
-local get_merged_opts = function(user_opts)
-    local merged_opts = default_opts
-    if user_opts ~= nil then
-        for k, v in pairs(user_opts) do
-            merged_opts[k] = v
-        end
-    end
-    return merged_opts
-end
+M.setup = function(opts)
+    opts = vim.tbl_deep_extend("force", default_opts, opts)
 
-M.setup = function(user_opts)
-    user_opts = get_merged_opts(user_opts)
-
-    if user_opts.keymap then
-        apply_keymap()
+    if opts.keymaps then
+        H.apply_keymap(opts.keymaps)
     end
 
-    vim.cmd("colorscheme habamax")
+    if opts.colorscheme then
+        vim.cmd("colorscheme " .. opts.colorscheme)
+    end
 
     local opt = vim.opt
     -- 24 bit terminal colors
@@ -184,7 +204,7 @@ M.setup = function(user_opts)
     opt.splitright = true
     -- Don't auto-insert comments on new line (see :h fo-table)
     opt.formatoptions:remove("o")
-     -- Don't wrap lines after textwidth
+    -- Don't wrap lines after textwidth
     opt.formatoptions:remove("c")
     -- Always show the signcolumn, an alternative is 'number', see :h signcolumn
     opt.signcolumn = "yes"
@@ -206,7 +226,7 @@ M.setup = function(user_opts)
     vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
     vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
 
-    if user_opts.statusline then
+    if opts.statusline then
         opt.statusline = get_status_line()
     end
 end
