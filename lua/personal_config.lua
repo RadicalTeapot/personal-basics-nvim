@@ -55,6 +55,7 @@ H.keymaps = {
     { "n", "<Leader>bo", "<cmd>e #<cr>", desc = "[B]uffer [o]ther" },
     { "n", "<Leader>bc", "<cmd>bdelete<cr>", desc = "[B]uffer [c]lose" },
     { "n", "<Leader>bd", "<cmd>bdelete!<cr>", desc = "[B]uffer [d]elete" },
+    { "n", "<Leader>bC", "<cmd>%bd|e#|bd#<cr>", desc = "[B]uffer [C]lose others" },
 
     -- Window
     { "n", "<Leader>wj", "<cmd>wincmd j<cr>", desc = "Move to [w]indow below" },
