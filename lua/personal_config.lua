@@ -45,23 +45,22 @@ H.keymaps = {
     { "v", "<C-k>", ":m '<-2<cr>gv=gv", desc = "Move selection up" },
     { "v", "<C-Up>", ":m '<-2<cr>gv=gv", desc = "Move selection up" },
 
-    -- Navigate between quickfix items
-    { "n", "<Leader>qn", "<cmd>cnext<CR>zz", desc = "[q]fixlist [n]ext" },
-    { "n", "<Leader>qp", "<cmd>cprev<CR>zz", desc = "[q]fixlist [p]revious" },
+    -- Navigate between quick fix list items
+    { "n", "<Leader>qn", "<cmd>cnext<CR>zz", desc = "[q]uickfix [n]ext" },
+    { "n", "<Leader>qp", "<cmd>cprev<CR>zz", desc = "[q]uickfix [p]revious" },
+    { "n", "<Leader>qf", "<cmd>cfirst<CR>zz", desc = "[q]uickfix [f]irst" },
+    { "n", "<Leader>ql", "<cmd>clast<CR>zz", desc = "[q]uickfix [l]ast" },
+    { "n", "<Leader>qo", "<cmd>copen<CR>zz", desc = "[q]uickfix [o]pen" },
+    { "n", "<Leader>qc", "<cmd>cclose<CR>zz", desc = "[q]uickfix [c]lose" },
 
     -- Buffer
     { "n", "<Leader>bn", "<cmd>bnext<cr>", desc = "[B]uffer [n]ext" },
     { "n", "<Leader>bp", "<cmd>bprevious<cr>", desc = "[B]uffer [p]revious" },
     { "n", "<Leader>bo", "<cmd>e #<cr>", desc = "[B]uffer [o]ther" },
-    { "n", "<Leader>bc", "<cmd>bdelete<cr>", desc = "[B]uffer [c]lose" },
-    { "n", "<Leader>bd", "<cmd>bdelete!<cr>", desc = "[B]uffer [d]elete" },
-    { "n", "<Leader>bC", "<cmd>%bd|e#|bd#<cr>", desc = "[B]uffer [C]lose others" },
-
-    -- Window
-    { "n", "<Leader>wj", "<cmd>wincmd j<cr>", desc = "Move to [w]indow below" },
-    { "n", "<Leader>wk", "<cmd>wincmd k<cr>", desc = "Move to [w]indow above" },
-    { "n", "<Leader>wl", "<cmd>wincmd l<cr>", desc = "Move to [w]indow left" },
-    { "n", "<Leader>wh", "<cmd>wincmd h<cr>", desc = "Move to [w]indow right" },
+    { "n", "<Leader>bd", "<cmd>bdelete<cr>", desc = "[B]uffer [d]elete" },
+    { "n", "<Leader>bD", "<cmd>bdelete!<cr>", desc = "[B]uffer force [d]elete" },
+    { "n", "<Leader>bw", "<cmd>bwipeout<cr>", desc = "[B]uffer [w]ipeout" },
+    { "n", "<Leader>bc", "<cmd>%bd|e#|bd#<cr>", desc = "[B]uffer [c]lose others" },
 }
 
 -- Keymaps --------------------------------------------------------------------
@@ -209,6 +208,8 @@ M.setup = function(opts)
     opt.formatoptions:remove("c")
     -- Always show the signcolumn, an alternative is 'number', see :h signcolumn
     opt.signcolumn = "yes"
+    -- Highlight cursor line and cursor line number
+    opt.cursorline = true
 
     -- Only one status line and set window separator color to none
     opt.laststatus = 3
