@@ -61,6 +61,10 @@ H.keymaps = {
     { "n", "<Leader>bD", "<cmd>bdelete!<cr>", desc = "[B]uffer force [d]elete" },
     { "n", "<Leader>bw", "<cmd>bwipeout<cr>", desc = "[B]uffer [w]ipeout" },
     { "n", "<Leader>bc", "<cmd>%bd|e#|bd#<cr>", desc = "[B]uffer [c]lose others" },
+
+    -- Other
+    { "n", "]l", "/[[<cr>zz<cmd>noh<cr>", desc = "Jump to next link", silent = true },
+    { "n", "[l", "/[[<cr>2Nzz<cmd>noh<cr>", desc = "Jump to previous link", silent = true },
 }
 
 -- Keymaps --------------------------------------------------------------------
