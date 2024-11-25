@@ -62,6 +62,12 @@ H.keymaps = {
     { "n", "<Leader>bw", "<cmd>bwipeout<cr>", desc = "[B]uffer [w]ipeout" },
     { "n", "<Leader>bc", "<cmd>%bd|e#|bd#<cr>", desc = "[B]uffer [c]lose others" },
 
+    -- Window management
+    {"n", "<C-S-Left>", "<C-w><", desc = "Expand window to the left"},
+    {"n", "<C-S-Right>", "<C-w>>", desc = "Expand window to the right"},
+    {"n", "<C-S-Up>", "<C-w>+", desc = "Increase window height"},
+    {"n", "<C-S-Down>", "<C-w>-", desc = "Decrease window height"},
+
     -- Other
     { "n", "]l", "/[[<cr>zz<cmd>noh<cr>", desc = "Jump to next link", silent = true },
     { "n", "[l", "/[[<cr>2Nzz<cmd>noh<cr>", desc = "Jump to previous link", silent = true },
