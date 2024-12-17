@@ -71,6 +71,7 @@ H.keymaps = {
     -- Other
     { "n", "]l", "/[[<cr>zz<cmd>noh<cr>", desc = "Jump to next link", silent = true },
     { "n", "[l", "/[[<cr>2Nzz<cmd>noh<cr>", desc = "Jump to previous link", silent = true },
+    { "n", "<leader>cl", function() vim.print(os.date("%y-%m-%d %H:%M", os.time())) end, desc = "Show [cl]ock", silent = true },
 }
 
 -- Keymaps --------------------------------------------------------------------
