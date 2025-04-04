@@ -75,6 +75,22 @@ H.keymaps = {
     { "v", "<leader>x", [[<cmd>exe getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]<CR>]], desc = "E[x]ecute current sel", silent = true },
 }
 
+-- Autocommands ---------------------------------------------------------------
+
+H.apply_autocommands = function()
+    vim.api.nvim_create_autocmd({"BufWinEnter"}, {
+        pattern = "*/doc/*",
+        callback = function (args)
+            local current_win_width = vim.api.nvim_win_get_width(0) -- 0 means current window
+            local filetype = vim.api.nvim_get_option_value('filetype',  {buf=args.buf})
+            if (filetype == "help" and current_win_width > 120) then
+                vim.cmd([[wincmd L]])
+            end
+        end,
+        desc="Open help in vertical split if window is wide enough"
+    })
+end
+
 -- Keymaps --------------------------------------------------------------------
 
 ---Sensible keymap default opts
@@ -153,6 +169,7 @@ local default_opts = {
     scrolloff = 5,
     statusline = true,
     colorscheme = "habamax",
+    autocmds = true,
 }
 
 M.setup = function(opts)
@@ -160,6 +177,10 @@ M.setup = function(opts)
 
     if opts.keymaps then
         H.apply_keymap(opts.keymaps)
+    end
+
+    if opts.autocmds then
+        H.apply_autocommands()
     end
 
     if opts.colorscheme then
