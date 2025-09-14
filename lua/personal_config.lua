@@ -123,8 +123,16 @@ H.apply_keymap = function(keymaps)
 end
 
 local git_branch = function()
-    -- Get branch name from git (and redirect stderr to NUL if command fails)
-    local branch = vim.fn.system([[git rev-parse --abbrev-ref HEAD 2>NUL]])
+    -- Get branch name from git (and redirect stderr if command fails)
+    -- On Unix-like systems, use 2>/dev/null
+    -- On Windows PowerShell, use 2>$null
+    local isWindows = vim.uv.os_uname().version:match("Windows")
+    local branch
+    if isWindows then
+        branch = vim.fn.system([[git rev-parse --abbrev-ref HEAD 2>$null]])
+    else
+        branch = vim.fn.system([[git rev-parse --abbrev-ref HEAD 2>/dev/null]])
+    end
     if string.len(branch) > 0 then
         return branch:gsub("\n", "") -- trim any newline character
     else
